@@ -15,6 +15,8 @@ with open(os.path.join(here, 'requirements.txt'), 'r') as infile:
         if line and not line[0] == '#':  # ignore comments
             requirements.append(line)
 
+
+#print(requirements)
 setuptools.setup(
     name='mlmonkey',
     version=version_locals['__version__'],

@@ -45,7 +45,7 @@ RUN apt-get install -y \
 
 
 # Setup Python3 environment
-#RUN pip3 install --upgrade pip==9.0.1
+RUN pip3 install --upgrade pip
 # setuptools upgraded to fix install requirements from model garden.
 #RUN pip3 install --upgrade setuptools google-api-python-client google-cloud google-cloud-bigquery
 #RUN pip3 install wheel absl-py
@@ -72,4 +72,4 @@ RUN mkdir -p /web && \
     mv index.html /web && \
     mv lighttpd.conf /etc/lighttpd/lighttpd.conf 
 
-CMD ["bash", "/scripts/run.sh", "quick=true"]
+# CMD ["bash", "/scripts/run.sh", "quick=true"]
