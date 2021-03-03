@@ -1,13 +1,15 @@
-from __future__ import absolute_import
+# from __future__ import absolute_import
 
-import flask
-import mlmonkey.api.view
-from mlmonkey import scheduler
+import flask 
+from api import view
+#import scheduler
+#import mlmonkey.api.view
+#from mlmonkey import scheduler
 
 
-scheduler = scheduler.Scheduler()
+#scheduler = scheduler.Scheduler()
 app = flask.Flask(__name__)
-app.register_blueprint(mlmonkey.api.view.blueprint)
+app.register_blueprint(view.blueprint)
 
 
 def main():
