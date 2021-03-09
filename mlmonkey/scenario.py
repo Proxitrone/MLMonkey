@@ -5,8 +5,8 @@ import uuid
 import pickle
 import shutil
 import traceback
-from mlmonkey import constants
-from mlmonkey.status import Status
+import constants
+from status import Status
 
 
 class Scenario:

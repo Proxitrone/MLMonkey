@@ -1,15 +1,16 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+#from __future__ import absolute_import
+#from __future__ import division
+#from __future__ import print_function
 
 import os
-from mlmonkey import constants
+import constants
+import git
 
 if not os.path.exists(constants.JOBS_DIR):
     os.makedirs(constants.JOBS_DIR)
 
-if not os.path.exists(constants.SCENARIOS_JSON):
-    with open(constants.SCENARIOS_JSON, 'a') as f:
+if not os.path.exists(constants.SYSTEM_JSON):
+    with open(constants.SYSTEM_JSON, 'a') as f:
         f.write('{}')
 
 if not os.path.exists(constants.BANDWIDTH_TXT):
@@ -19,4 +20,8 @@ if not os.path.exists(constants.BANDWIDTH_TXT):
 if not os.path.exists(constants.TOPOLOGY_TXT):
     with open(constants.TOPOLOGY_TXT, 'a') as f:
         pass
-
+# Create benchmarking repo directory
+if not os.path.exists(constants.BENCHMARKS_DIR):
+    os.makedirs(constants.BENCHMARKS_DIR)
+    # Clone benchmarking repo on startup
+    git.Git(constants.BENCHMARKS_DIR).clone(constants.BENCHMARKS_REPO)

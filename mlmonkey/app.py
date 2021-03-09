@@ -1,8 +1,9 @@
 # from __future__ import absolute_import
 
+import __init__
 import flask 
 from api import view
-#import scheduler
+import scheduler
 #import mlmonkey.api.view
 #from mlmonkey import scheduler
 

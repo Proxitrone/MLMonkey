@@ -11,7 +11,7 @@ def _sh(cmd, in_shell=False, get_str=True):
     :param get_str:
     :return:
     """
-    output = subprocess.check_output(cmd, shell=in_shell)
+    output = subprocess.check_output(cmd, shell=in_shell).decode('utf-8')
     if get_str:
         return str(output)
     return output
@@ -88,8 +88,10 @@ def get_disk_info():
         find out how many disk in this machine
         """
         # sds = _sh('ls -1d /dev/sd[a-z]', in_shell=True)
-	sds = _sh('sudo lsblk --scsi | grep \'^sd\' | cut -d \" \" -f1', in_shell=True)
+        sds = _sh('sudo lsblk --scsi | grep \'^sd\' | cut -d " " -f1', in_shell=True)
+        # print(sds)
         sd_list = [x for x in sds.split('\n') if x]
+        # print(sd_list)
         return sd_list
 
     def countSize(disks):
@@ -102,6 +104,7 @@ def get_disk_info():
         return "{} GB".format(sum)
 
     disks = disk_list()
+    # print(disks)
     cmd = ['smartctl', '-i']
     parsing = False
     splitter = ':'

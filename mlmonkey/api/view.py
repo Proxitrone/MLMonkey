@@ -6,8 +6,8 @@ from flask import make_response
 # ref https://github.com/Alwayswithme/sysinfo
 
 #from mlmonkey import constants
-#import constants
-#from utils import sysinfo
+import constants
+from utils import sysinfo
 #import scenario
 #import scheduler
 #from mlmonkey.utils import sysinfo
@@ -22,29 +22,80 @@ def home():
     return "homepage"
 
 
-#@blueprint.route('/hwinfo', methods=['GET', 'POST'])
-#def show_hw_info():
-#    file = constants.SCENARIOS_JSON
-#    if flask.request.method == 'POST':
-#        gpus = sysinfo.get_graphics_card_info()
-#        cpu = sysinfo.get_cpu_hwinfo()
-#        memory = sysinfo.get_mem_info()
-#        disk = sysinfo.get_disk_info()
-#
-#        data = {
-#            'cpu': cpu,
-#            'memory': memory,
-#            'disk': disk,
-#            'gpu': gpus
-#        }
-#        with open(file, 'w') as json_file:
-#            json.dump(data, json_file)
-#
-#    with open(file, 'r') as json_file:
-#        data = json.load(json_file)
-#    return flask.jsonify(data)
-#
-#
+@blueprint.route('/system', methods=['GET'])
+def show_hw_info():
+    file = constants.SYSTEM_JSON
+    try:
+        with open(file, 'r') as json_file:
+            data = json.load(json_file)
+        return flask.jsonify(data)
+    except FileNotFoundError:
+        return "System information file not found, generate it with a POST request with {action:detect}"
+
+@blueprint.route('/system', methods=['POST'])
+def get_hw_info():
+    file = constants.SYSTEM_JSON
+    if flask.request.args['action'] == 'detect':
+        gpus = sysinfo.get_graphics_card_info()
+        cpu = sysinfo.get_cpu_hwinfo()
+        memory = sysinfo.get_mem_info()
+        disk = sysinfo.get_disk_info()
+
+        data = {
+            'cpu': cpu,
+            'memory': memory,
+            'disk': disk,
+            'gpu': gpus
+        }
+        with open(file, 'w') as json_file:
+            json.dump(data, json_file)
+            
+    elif flask.request.args['action'] == 'setup':
+        return "Setup CUDA & nvidia-docker"
+    elif flask.request.args['action'] == 'verify':
+        return "Verify that the number of gpus"
+    else:
+        return "Unnkown action requested"
+    with open(file, 'r') as json_file:
+        data = json.load(json_file)
+    return flask.jsonify(data)
+
+
+@blueprint.route('/datasets', methods=['GET'])
+def show_dataset_info():
+    return "Show dataset info"
+      
+      
+@blueprint.route('/datasets/<id>', methods=['POST'])
+def dataset_action(id):
+    
+    if flask.request.args['action'] == 'detect':
+        return "Detect dataset with id "+str(id)
+    elif flask.request.args['action'] == 'download':
+        return "Download dataset with id "+str(id)
+    elif flask.request.args['action'] == 'verify':
+        return "Verify dataset with id "+str(id)
+    elif flask.request.args['action'] == 'process':
+        return "Process dataset with id "+str(id)    
+    else:
+      return "Unnkown action requested"
+      
+@blueprint.route('/benchmarks', methods=['GET'])
+def show_benchmark_info():
+    return "Show benchmark info"
+      
+      
+@blueprint.route('/benchmarks/<id>', methods=['POST'])
+def benchmark_action(id):
+    
+    if flask.request.args['action'] == 'build':
+        return "Build benchmark with id "+str(id)
+    elif flask.request.args['action'] == 'train':
+        return "Train benchmark with id "+str(id)
+    elif flask.request.args['action'] == 'stop':
+        return "Stop benchmark with id "+str(id)
+    else:
+      return "Unnkown action requested"
 #@blueprint.route('/scenario', methods=['POST'])
 #def create_scenario():
 #    # Get data from the scenario form

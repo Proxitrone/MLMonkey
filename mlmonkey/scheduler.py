@@ -5,9 +5,9 @@ import os
 import json
 import time
 
-from mlmonkey import scenario
-from mlmonkey import constants
-from mlmonkey.status import Status
+import scenario
+import constants
+from status import Status
 
 
 class Scheduler:
